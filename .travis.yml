@@ -1,0 +1,30 @@
+dist: bionic
+group: travis_latest
+
+os: linux
+language: python
+
+matrix:
+  include:
+    - env: CC=gcc
+    - env: CC=clang
+
+before_install:
+  - sudo apt-add-repository -y ppa:nnstreamer
+  - sudo apt-get -q update
+
+install:
+  - sudo apt install -y meson ninja-build
+  - sudo apt install -y libgstreamer1.0-dev
+  - sudo apt install -y libgstreamer-plugins-base1.0-dev
+  - sudo apt install -y libgstreamer-plugins-good1.0-dev
+  - sudo apt install -y gstreamer1.0-plugins-base
+  - sudo apt install -y gstreamer1.0-plugins-good
+  - sudo apt install -y libflatbuffers-dev
+  - sudo apt install -y libgtest-dev
+
+script:
+  - meson build
+  - ninja -C build
+  - cd build
+  - find . -name *.so
